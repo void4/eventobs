@@ -31,7 +31,7 @@ ax.imshow(pimg, extent=[0,360,-90,90])
 cs = plt.contour(lonrange, latrange, arr, alpha=1.0, levels=18, cmap="RdYlGn", nchunk=18, antialiased=True)
 plt.clabel(cs, inline=True, fontsize=10)
 
-plt.title(f"{lonstr} {latstr} @ {tstr}")
+plt.title(f"J2000 {lonstr} {latstr} @ {tstr} UTC")
 fig.set_size_inches(18.5, 10.5)
 plt.tight_layout()
 plt.savefig("plot.png")
