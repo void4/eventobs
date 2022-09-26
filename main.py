@@ -18,6 +18,7 @@ sunarr = []
 
 latrange = range(90, -91, -5)
 lonrange = range(0, 361, 5)
+
 rlonrange = range(-180, 181, 5)
 
 for lat in latrange:
@@ -56,7 +57,7 @@ plt.clabel(cs, inline=True, fontsize=10)
 plt.title(f"Altitude of {lonstr} {latstr} (J2000) @ {tstr} UTC")
 fig.set_size_inches(18.5, 10.5)
 plt.xticks(range(-180, 181, 15))
-plt.yticks(latrange)
+plt.yticks(range(90, -91, -15))
 plt.tight_layout()
 plt.savefig("plot.png")
 plt.show()
