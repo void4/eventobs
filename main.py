@@ -1,16 +1,18 @@
 import astropy.units as u
 from astropy.time import Time
 from astropy.coordinates import SkyCoord, EarthLocation, AltAz
-
+import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pylab as pl
 
-from PIL import Image
+from matplotlib.colors import ListedColormap
 
-lon, lat = "03h15m46s", "-33d48m58s"
+lonstr, latstr = "03h15m46s", "-33d48m58s"
 
-obj = SkyCoord(lon, lat)
+obj = SkyCoord(lonstr, latstr)
 
-t = Time("2022-09-26 23:14")
+tstr = "2022-09-26 23:14"
+t = Time(tstr)
 
 x = 0
 y = 0
@@ -20,30 +22,27 @@ BLACK = [0,0,0,0]
 
 arr = []
 
-for lat in range(89, -90, -1):
+latrange = range(90, -91, -5)
+lonrange = range(0, 361, 5)
+
+for lat in latrange:
 	print(lat)
 	arr.append([])
-	for lon in range(0,360, 1):
-		rlon = lon-180
-		loc = EarthLocation(lat=lat*u.deg, lon=rlon*u.deg)#ignoring height
+	for lon in lonrange:
+		loc = EarthLocation(lat=lat*u.deg, lon=(lon-180)*u.deg)#ignoring height
 		altaz = obj.transform_to(AltAz(obstime=t, location=loc))
 		alt = altaz.alt.to_value()
-		if int(alt) == 0:
-			color = (0,0,0,255)
-		elif alt > 0:
-			color = (0,int(2.8*alt),0,128)
-		else:
-			color = (int(2.8*-alt),0,0,128)
-		#color = WHITE if alt > 35 else BLACK
-		arr[-1].append(color)
+		arr[-1].append(alt)
 
-background = Image.open("Equirectangular_projection_SW.jpg").convert("RGBA")
+pimg = plt.imread("Equirectangular_projection_BW.jpg")
+fig, ax = plt.subplots()
+ax.imshow(pimg, extent=[0,360,-90,90])
 
-print(background.size)
+cs = plt.contour(lonrange, latrange, arr, alpha=1.0, levels=18, cmap="RdYlGn", nchunk=18, antialiased=True)
+plt.clabel(cs, inline=True, fontsize=10)
 
-#img = Image.new("RGB", (len(arr[0]), len(arr)))
-img = Image.fromarray(np.asarray(arr, dtype=np.uint8))
-img = img.resize(background.size)
-result = Image.alpha_composite(background, img)
-result.save("result.png")
-result.show()
+plt.title(f"{lonstr} {latstr} @ {tstr}")
+fig.set_size_inches(18.5, 10.5)
+plt.tight_layout()
+plt.savefig("plot.png")
+plt.show()
