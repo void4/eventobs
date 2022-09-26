@@ -2,10 +2,6 @@ import astropy.units as u
 from astropy.time import Time
 from astropy.coordinates import SkyCoord, EarthLocation, AltAz
 import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib.pylab as pl
-
-from matplotlib.colors import ListedColormap
 
 lonstr, latstr = "03h15m46s", "-33d48m58s"
 
