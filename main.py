@@ -10,12 +10,6 @@ obj = SkyCoord(lonstr, latstr)
 tstr = "2022-09-26 23:14"
 t = Time(tstr)
 
-x = 0
-y = 0
-
-WHITE = [255,255,255,255]
-BLACK = [0,0,0,0]
-
 arr = []
 
 latrange = range(90, -91, -5)
